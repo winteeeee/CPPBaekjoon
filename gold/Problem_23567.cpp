@@ -1,28 +1,71 @@
 #include <iostream>
 using namespace std;
 
-int main() {
-    int n, k;
-    scanf("%d, %d", &n, &k);
-
-    int P[n];
-    int count[k + 1];
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &P[i]);
-        count[P[i]]++;
+bool isRainbow(int arr[], int k) {
+    for(int i = 1; i <= k; i++) {
+        if(!arr[i])
+            return false;
     }
 
-    int start = 0;
-    int end = k;
-
-    while(end < n) {
-
-    }
+    return true;
 }
 
-/*
- * 처음 크기를 k로 잡고 모든 색이 있는지 확인
- * 없으면 end를 늘림 있으면 start를 줄이고 모든 색이 있는지 확인
- * 있으면 start를 줄임(최소 크기까지) 없으면 end를 늘림
- * 이걸 끝까지 반복하여 최소 크기를 출력
- */
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+
+    int P[n + 1];
+    int PCount[k + 1];
+    fill_n(PCount, k + 1, 0);
+    for (int i = 1; i <= n; i++) {
+        scanf("%d", &P[i]);
+        PCount[P[i]]++;
+    }
+    if(n / 2 >= k) {
+        int start = 1;
+        int end = k;
+        int PPrimeCount[k + 1];
+        fill_n(PPrimeCount, k + 1, 0);
+        for(int i = start; i < end; i++) {
+            PPrimeCount[P[i]]++;
+            PCount[P[i]]--;
+        }
+
+        int result = 100000001;
+        while (start < n / 2) {
+            for(int i = end; i < n && (end - start) + 1 <= n / 2; i++) {
+                if (!(isRainbow(PPrimeCount, k) && isRainbow(PCount, k))) {
+                    end++;
+                    PPrimeCount[P[end]]++;
+                    PCount[P[end]]--;
+                    continue;
+                }
+
+                else {
+                    if (result > end - start)
+                        result = end - start + 1;
+
+                    break;
+                }
+            }
+
+            PPrimeCount[P[start]]--;
+            PCount[P[start]]++;
+            start++;
+            while(end != k + start - 1) {
+                PPrimeCount[P[end]]--;
+                PCount[P[end]]++;
+                end--;
+            }
+        }
+
+        if(result != 100000001)
+            printf("%d", result);
+
+        else
+            printf("0");
+    }
+
+    else
+        printf("0");
+}
