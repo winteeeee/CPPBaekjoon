@@ -1,15 +1,6 @@
 #include <iostream>
 using namespace std;
 
-bool isRainbow(int arr[], int k) {
-    for(int i = 1; i <= k; i++) {
-        if(!arr[i])
-            return false;
-    }
-
-    return true;
-}
-
 int main() {
     int n, k;
     scanf("%d %d", &n, &k);
@@ -21,41 +12,67 @@ int main() {
         scanf("%d", &P[i]);
         PCount[P[i]]++;
     }
+
+
     if(n / 2 >= k) {
         int start = 1;
         int end = k;
         int PPrimeCount[k + 1];
         fill_n(PPrimeCount, k + 1, 0);
-        for(int i = start; i < end; i++) {
+        for(int i = start; i <= end; i++) {
             PPrimeCount[P[i]]++;
-            PCount[P[i]]--;
         }
 
         int result = 100000001;
-        while (start < n / 2) {
-            for(int i = end; i < n && (end - start) + 1 <= n / 2; i++) {
-                if (!(isRainbow(PPrimeCount, k) && isRainbow(PCount, k))) {
-                    end++;
-                    PPrimeCount[P[end]]++;
-                    PCount[P[end]]--;
-                    continue;
-                }
-
-                else {
-                    if (result > end - start)
-                        result = end - start + 1;
-
+        bool right = true;
+        while (end - start + 1 <= n / 2) {
+            bool next = false;
+            for(int j = 1; j <= k; j++) {
+                if(PPrimeCount[j] == 0 || PPrimeCount[j] == PCount[j]) {
+                    next = true;
                     break;
                 }
             }
 
-            PPrimeCount[P[start]]--;
-            PCount[P[start]]++;
-            start++;
-            while(end != k + start - 1) {
-                PPrimeCount[P[end]]--;
-                PCount[P[end]]++;
-                end--;
+            if(next) {
+                if(end == n && start == 1) {
+                    break;
+                }
+
+                if(right) {
+                    if(end != n) {
+                        end++;
+                        PPrimeCount[P[end]]++;
+                        PPrimeCount[P[start]]--;
+                        start++;
+                    }
+
+                    else {
+                        right = false;
+                        start--;
+                        PPrimeCount[P[start]]++;
+                    }
+                }
+
+                else {
+                    if(start != 1) {
+                        start--;
+                        PPrimeCount[P[start]]++;
+                        PPrimeCount[P[end]]--;
+                        end--;
+                    }
+
+                    else {
+                        right = true;
+                        end++;
+                        PPrimeCount[P[end]]++;
+                    }
+                }
+            }
+
+            else {
+                result = end - start + 1;
+                break;
             }
         }
 
@@ -68,4 +85,6 @@ int main() {
 
     else
         printf("0");
+
+    return 0;
 }
