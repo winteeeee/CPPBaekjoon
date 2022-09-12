@@ -1,32 +1,21 @@
 #include <iostream>
-#include <queue>
+#include <algorithm>
 #include <climits>
 using namespace std;
 
 int chickenDistanceOfCity = 0;
 int result = INT_MAX;
-int city[51][51];
-bool visited[51][51];
-bool visited2[51][51];
-int cordX[4] = {0, 0, 1, -1};
-int cordY[4] = {1, -1, 0, 0};
+vector<pair<int, int>> house;
+vector<pair<int, int>> chickenHouse;
+vector<pair<int, int>> surviveChickenHouse;
 
-int findChickenDistance(int r, int c, int n);
-void shutDown(int shutDownCount, int m, int n, int r, int c) {
-    if(shutDownCount == m + 1 && !visited[r][c]) {
-        visited[r][c] = true;
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= n; j++) {
-                if(city[i][j] == 1 && !visited2[i][j]) {
-                    chickenDistanceOfCity += findChickenDistance(i, j, n);
-
-                    for(int i = 1; i <= n; i++) {
-                        for(int j = 1; j <= n; j++) {
-                            visited2[i][j] = false;
-                        }
-                    }
-                }
-            }
+int findChickenDistance(int r, int c);
+void shutDown(int shutDownCount, int idx, int m) {
+    if(shutDownCount == m) {
+        for(int i = 0; i < house.size(); i++) {
+            int houseR = house.at(i).first;
+            int houseC = house.at(i).second;
+            chickenDistanceOfCity += findChickenDistance(houseR, houseC);
         }
 
         if(result > chickenDistanceOfCity) {
@@ -36,73 +25,48 @@ void shutDown(int shutDownCount, int m, int n, int r, int c) {
         return;
     }
 
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= n; j++) {
-            if(city[i][j] == 2) {
-                if(shutDownCount != m) {
-                    city[i][j] = 0;
-                    shutDown(shutDownCount + 1, m, n, i, j);
-                    city[i][j] = 2;
-                }
-
-                else {
-                    shutDown(shutDownCount + 1, m, n, i, j);
-                }
-            }
-        }
+    for(int i = idx; i < chickenHouse.size(); i++) {
+        int curR = chickenHouse.at(i).first;
+        int curC = chickenHouse.at(i).second;
+        surviveChickenHouse.push_back(make_pair(curR, curC));
+        shutDown(shutDownCount + 1, i + 1, m);
+        surviveChickenHouse.pop_back();
     }
 }
 
-int findChickenDistance(int r, int c, int n) {
-    queue<int> q;
-    int result = 0;
-    q.push(r);
-    q.push(c);
-    q.push(0);
-    visited2[r][c] = true;
+int findChickenDistance(int r, int c) {
+    int chickenDistance = INT_MAX;
 
-    while(!q.empty()) {
-        int curR = q.front(); q.pop();
-        int curC = q.front(); q.pop();
-        int count = q.front(); q.pop();
-
-        if(city[curR][curC] == 2) {
-            result = count;
-            break;
-        }
-
-        for(int i = 0; i < 4; i++) {
-            int rIdx = curR + cordY[i];
-            int cIdx = curC + cordX[i];
-            if((rIdx > 0 && rIdx <= n) && (cIdx > 0 && cIdx <= n)) {
-                if(!visited2[rIdx][cIdx]) {
-                    q.push(rIdx);
-                    q.push(cIdx);
-                    q.push(count + 1);
-                    visited2[rIdx][cIdx] = true;
-                }
-            }
-        }
+    for(int i = 0; i < surviveChickenHouse.size(); i++) {
+        int curR = surviveChickenHouse.at(i).first;
+        int curC = surviveChickenHouse.at(i).second;
+        chickenDistance = min(chickenDistance, abs(r - curR) + abs(c - curC));
     }
 
-    return result;
+    return chickenDistance;
 }
 
 int main() {
     int n, m;
     scanf("%d %d", &n, &m);
-    int chickenHouse = 0;
+    int chickenHouseCount = 0;
 
     for(int i = 1; i <= n; i++) {
         for(int j = 1; j <= n; j++) {
-            scanf("%d", &city[i][j]);
+            int temp;
+            scanf("%d", &temp);
 
-            if(city[i][j] == 2)
-                chickenHouse++;
+            if(temp == 2) {
+                chickenHouse.push_back(make_pair(i, j));
+                chickenHouseCount++;
+            }
+
+            else if (temp == 1)
+                house.push_back(make_pair(i, j));
         }
     }
 
-    shutDown(0, chickenHouse - m, n, 1, 1);
+    shutDown(0, 0, m);
     printf("%d", result);
 
     return 0;
