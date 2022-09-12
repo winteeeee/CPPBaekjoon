@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <algorithm>
 #include <climits>
@@ -70,4 +71,4 @@ int main() {
     printf("%d", result);
 
     return 0;
-}
+}*/
