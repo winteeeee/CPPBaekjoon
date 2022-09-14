@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <climits>
 using namespace std;
 
 vector<pair<int, int>> cord;
 vector<bool> picked;
-double minV = 0;
+double minV;
 
 double getSize(pair<int, int> a, pair<int, int> b);
 void dfs(int start, int cur, int n);
@@ -14,7 +15,7 @@ int main() {
     scanf("%d", &t);
 
     for(int i = 0; i < t; i++) {
-        minV = 0;
+        minV = INT_MAX;
         int n;
         scanf("%d", &n);
 
@@ -25,8 +26,9 @@ int main() {
             picked.push_back(false);
         }
 
-        dfs(0, 0, 2 / n);
+        dfs(0, 0, n / 2);
         printf("%lf\n", minV);
+        cord.clear();
     }
 
     return 0;
@@ -62,8 +64,8 @@ void dfs(int start, int cur, int n) {
 }
 
 double getSize(pair<int, int> a, pair<int, int> b) {
-    int xDiffer = abs(a.first - b.first);
-    int yDiffer = abs(a.second - b.second);
+    double xDiffer = abs(a.first - b.first);
+    double yDiffer = abs(a.second - b.second);
     xDiffer = pow(xDiffer, 2);
     yDiffer = pow(yDiffer, 2);
 
