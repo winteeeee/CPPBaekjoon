@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -71,3 +72,4 @@ double getSize(pair<int, int> a, pair<int, int> b) {
 
     return sqrt(xDiffer + yDiffer);
 }
+*/
