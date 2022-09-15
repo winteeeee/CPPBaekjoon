@@ -1,13 +1,14 @@
+/*
 #include <iostream>
 #include <vector>
 #include <algorithm>
 using namespace std;
+typedef long long ll;
 
 vector<int> sequence;
-vector<int> sequenceA;
-vector<int> sequenceB;
-void DFS(int cur, int r, int innerStart, int innerEnd, int sum, vector<int> &target);
-int binarySearch(vector<int> source, int target);
+vector<ll> sequenceA;
+vector<ll> sequenceB;
+void DFS(int cur, int r, int innerStart, int innerEnd, int sum, vector<ll> &target);
 int main() {
     int N, S;
     scanf("%d %d", &N, &S);
@@ -18,63 +19,35 @@ int main() {
         sequence.push_back(value);
     }
 
-    if(N != 1) {
-        for (int i = 1; i <= N / 2; i++)
-            DFS(0, i, 0, N / 2, 0, sequenceA);
-        for (int i = N / 2; i <= sequence.size(); i++)
-            DFS(0, i - N / 2 + 1, N / 2, sequence.size(), 0, sequenceB);
 
-        sort(sequenceA.begin(), sequenceA.end());
-        sort(sequenceB.begin(), sequenceB.end());
+    sequenceA.push_back(0);
+    sequenceB.push_back(0);
+    DFS(0, N / 2, 0, N / 2, 0, sequenceA);
+    DFS(0, N / 2 + 1, N / 2, sequence.size(), 0, sequenceB);
 
-        long long count = 0;
-        for (int i = 0; i < sequenceB.size(); i++) {
-            bool find = binarySearch(sequenceA, S - sequenceB[i]) != -1;
-            if (find) {
-                count++;
-            }
-        }
+    sort(sequenceA.begin(), sequenceA.end());
+    sort(sequenceB.begin(), sequenceB.end());
 
-        printf("%lld", count);
+    long long count = 0;
+    for (int i = 0; i < sequenceB.size(); i++) {
+        count += upper_bound(sequenceA.begin(), sequenceA.end(), S - sequenceB[i]) - lower_bound(sequenceA.begin(), sequenceA.end(), S - sequenceB[i]);
     }
 
-    else
-        printf("1");
+    if(S == 0) count--;
+    printf("%lld", count);
+
     return 0;
 }
 
-void DFS(int cur, int r, int innerStart, int innerEnd, int sum, vector<int> &target) {
+void DFS(int cur, int r, int innerStart, int innerEnd, int sum, vector<ll> &target) {
     if(cur == r) {
-        target.push_back(sum);
         return;
     }
 
     for(int i = innerStart; i < innerEnd; i++) {
         sum += sequence[i];
+        target.push_back(sum);
         DFS(cur + 1, r, i + 1, innerEnd, sum, target);
         sum -= sequence[i];
     }
-}
-
-int binarySearch(vector<int> source, int target) {
-    int low = 0;
-    int high = source.size() - 1;
-    int mid;
-
-    while(low < high) {
-        mid = high + low / 2;
-
-        if(source[mid] == target)
-            return mid;
-
-        else if(source[mid] < target) {
-            low = mid + 1;
-        }
-
-        else {
-            high = mid - 1;
-        }
-    }
-
-    return -1;
-}
+}*/
