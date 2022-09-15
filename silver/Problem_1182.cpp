@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -49,4 +50,4 @@ void DFS(int cur, int r, int innerStart, int innerEnd, int sum, vector<ll> &targ
         DFS(cur + 1, r, i + 1, innerEnd, sum, target);
         sum -= sequence[i];
     }
-}
+}*/
