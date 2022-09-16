@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <stack>
 #include <climits>
@@ -47,4 +48,4 @@ int main() {
 
     cout << minNum[SIZE];
     return 0;
-}
+}*/
