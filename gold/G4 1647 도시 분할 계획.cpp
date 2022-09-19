@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <climits>
@@ -50,4 +51,4 @@ int main() {
 
     cout << sum - max;
     return 0;
-}
+}*/
