@@ -12,8 +12,7 @@ int main() {
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int t, n;
-    long long sum;
+    int t, n, sum;
     cin >> t >> n;
 
     for(int i = 0; i < n; i++) {
