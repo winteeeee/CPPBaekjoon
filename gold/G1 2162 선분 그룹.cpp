@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -128,4 +129,4 @@ int setFind(int a) {
         return a;
 
     return setFind(set[a]);
-}
+}*/
