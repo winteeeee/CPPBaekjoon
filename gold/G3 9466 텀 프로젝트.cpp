@@ -1,16 +1,21 @@
+/*
 #include <iostream>
 using namespace std;
 
 int count;
-bool selected = false;
-void DFS(int cur, bool visited[], int student[], int start);
+void DFS(int cur, bool visited[], int student[], bool end[]);
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
     int t;
     cin >> t;
 
     for(int l = 0; l < t; l++) {
         int student[100001];
         bool visited[100001] = {false};
+        bool end[100001] = {false};
         count = 0;
         int n;
         cin >> n;
@@ -19,9 +24,8 @@ int main() {
         }
 
         for(int i = 1; i <= n; i++) {
-            selected = false;
             if(!visited[i])
-                DFS(i, visited, student, i);
+                DFS(i, visited, student, end);
         }
 
         cout << n - count << "\n";
@@ -30,21 +34,18 @@ int main() {
     return 0;
 }
 
-void DFS(int cur, bool visited[], int student[], int start) {
+void DFS(int cur, bool visited[], int student[], bool end[]) {
     visited[cur] = true;
-    count++;
-
-    if(student[cur] == start) {
-        selected = true;
-        return;
-    }
 
     if(!visited[student[cur]]) {
-        DFS(student[cur], visited, student, start);
+        DFS(student[cur], visited, student, end);
     }
 
-    if(!selected) {
-        visited[cur] = false;
-        count--;
+    else if(!end[student[cur]]) {
+        for(int i = student[cur]; i != cur; i = student[i])
+            count++;
+        count++;
     }
-}
+
+    end[cur] = true;
+}*/
