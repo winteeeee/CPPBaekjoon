@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -198,4 +199,4 @@ void DFS(int depth, int max, int stat, int board[][21]) {
     copy(&board[0][0], &board[0][0] + 21 * 21, &copyBoard4[0][0]);
     DFS(depth + 1, max, DOWN, copyBoard4);
     board = NULL;
-}
+}*/
