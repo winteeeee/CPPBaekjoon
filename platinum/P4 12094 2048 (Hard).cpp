@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -242,4 +243,4 @@ void DFS(int depth, int max, int stat, int board[][21], bool movable[4]) {
     }
     board = NULL;
     movable = NULL;
-}
+}*/
