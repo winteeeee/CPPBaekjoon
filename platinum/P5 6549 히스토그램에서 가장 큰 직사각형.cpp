@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -52,4 +53,4 @@ int main() {
 bool input(int &n) {
     cin >> n;
     return n;
-}
+}*/
