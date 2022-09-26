@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -76,4 +77,4 @@ bool isCross(pair<long long, long long> a, pair<long long, long long> b, pair<lo
     }
 
     return false;
-}
+}*/
