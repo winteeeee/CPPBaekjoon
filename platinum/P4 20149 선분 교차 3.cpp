@@ -42,7 +42,7 @@ int main() {
     }
 
     if(isCross(segments[0].getPoint1(), segments[0].getPoint2(), segments[1].getPoint1(), segments[1].getPoint2())) {
-        cout << "1" << "\n";
+        cout << "1";
 
         double x1 = segments[0].getPoint1().first;
         double x2 = segments[0].getPoint2().first;
@@ -58,54 +58,57 @@ int main() {
         double temp4 = x4 - x3;
         double seg1Angle = temp1 / temp2;
         double seg2Angle = temp3 / temp4;
-        double x = abs((seg1Angle * x1 * -1 + y1) - (seg2Angle * x3 * - 1 + y3)) / abs(seg1Angle - seg2Angle);
-        double y = seg1Angle * x - seg1Angle * x1 + y1;
+        double pX = (x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4);
+        double pY = (x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4);
+        double p = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        double x = pX / p;
+        double y = pY / p;
+        cout << fixed;
         cout.precision(9);
 
-
         if(!isnan(x) && !isnan(y) && seg1Angle != seg2Angle)
-            cout << x << " " << y;
+            cout << "\n" << x << " " << y;
 
-        else if(isnan(x) && isnan(y) && seg1Angle == seg2Angle && !isinf(seg1Angle) && !isinf(seg2Angle)) {
+        else if(seg1Angle == seg2Angle && !isinf(seg1Angle) && !isinf(seg2Angle)) {
             if(x1 == x3 && y1 == y3) {
                 if(x2 < x1 && x1 < x4 ||
                    x4 < x1 && x1 < x2)
                     if(x2 != x4)
-                        cout << x1 << " " << y1;
+                        cout << "\n" << x1 << " " << y1;
             }
 
-            if(x1 == x4 && y1 == y4) {
+            else if(x1 == x4 && y1 == y4) {
                 if(x2 < x1 && x1 < x3 ||
                    x3 < x1 && x1 < x2) {
                     if(x2 != x3)
-                        cout << x1 << " " << y1;
+                        cout << "\n" << x1 << " " << y1;
                 }
             }
 
-            if(x2 == x3 && y2 == y3) {
+            else if(x2 == x3 && y2 == y3) {
                 if(x1 < x2 && x2 < x4 ||
                    x4 < x2 && x2 < x1) {
                     if(x1 != x4)
-                        cout << x2 << " " << y2;
+                        cout << "\n" << x2 << " " << y2;
                 }
             }
 
-            if(x2 == x4 && y2 == y4) {
+            else if(x2 == x4 && y2 == y4) {
                 if(x1 < x2 && x2 < x3 ||
                    x3 < x2 && x2 < x1) {
                     if(x1 != x3)
-                        cout << x2 << " " << y2;
+                        cout << "\n" << x2 << " " << y2;
                 }
             }
         }
 
         else if(isinf(seg1Angle) || isinf(seg2Angle)) {
             if(isinf(seg1Angle) && !isinf(seg2Angle)) {
-                cout << x1 << " " << seg2Angle * x1 - seg2Angle * x3 + y3;
+                cout << "\n" << x << " " << y;
             }
 
             else if(!isinf(seg1Angle) && isinf(seg2Angle)) {
-                cout << x3 << " " << seg1Angle * x3 - seg1Angle * x1 + y1;
+                cout << "\n" << x << " " << y;
             }
 
             else {
@@ -113,30 +116,30 @@ int main() {
                     if(y2 < y1 && y1 < y4 ||
                        y4 < y1 && y1 < y2)
                         if(y2 != y4)
-                            cout << x1 << " " << y1;
+                            cout << "\n" << x1 << " " << y1;
                 }
 
-                if(x1 == x4 && y1 == y4) {
+                else if(x1 == x4 && y1 == y4) {
                     if(y2 < y1 && y1 < y3 ||
                        y3 < y1 && y1 < y2) {
                         if(y2 != y3)
-                            cout << x1 << " " << y1;
+                            cout << "\n" << x1 << " " << y1;
                     }
                 }
 
-                if(x2 == x3 && y2 == y3) {
+                else if(x2 == x3 && y2 == y3) {
                     if(y1 < y2 && y2 < y4 ||
                        y4 < y2 && y2 < y1) {
                         if(y1 != y4)
-                            cout << x2 << " " << y2;
+                            cout << "\n" << x2 << " " << y2;
                     }
                 }
 
-                if(x2 == x4 && y2 == y4) {
+                else if(x2 == x4 && y2 == y4) {
                     if(y1 < y2 && y2 < y3 ||
                        y3 < y2 && y2 < y1) {
                         if(y1 != y3)
-                            cout << x2 << " " << y2;
+                            cout << "\n" << x2 << " " << y2;
                     }
                 }
             }
