@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -178,4 +179,4 @@ bool isCross(pair<double, double> a, pair<double, double> b, pair<double, double
     }
 
     return false;
-}
+}*/
