@@ -1,5 +1,6 @@
 /*
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 int main() {
@@ -7,33 +8,38 @@ int main() {
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int n, k;
+    long long n, k;
     cin >> n >> k;
+    if(n == 1)
+        cout << "0";
 
-    int minusN = 0;
-    long long r = 0;
-    if(n > k) {
-        r += (k * (n - k));    //같은 값만 나오는 부분 미리 계산
-        minusN += n - k;
-    }
+    else {
+ */
+/*       if (k > n)
+            swap(k, n);*//*
 
-    if(n >= k - minusN) {
-        if (k & 1) { //등차수열로 나오는 부분 미리 계산
-            long long maxN = k / 2;
-            r += ((maxN * (maxN + 1) / 2));
-            minusN += (maxN + 1);
+
+        long long r = k * n;
+        long long prev = k;
+        long long cur;
+        for (int i = 2; i <= log2(k); i++) {
+            cur = k / i;
+            long long length = prev - cur;
+            r -= (i - 1) * ((length) * (prev - length + 1 + prev) / 2);
+            prev = cur;
         }
 
-        else {
-            long long maxN = k / 2 - 1;
-            r += ((maxN * (maxN + 1) / 2));
-            minusN += (maxN + 1);
+        for (int i = 1; i <= prev; i++) {
+            r -= i * (k / i);
         }
+
+        long long temp = 0;
+        for(int i = 1; i <= n; i++) {
+            temp += (k % i);
+        }
+
+        cout << temp << "\n";
+        cout << r;
     }
-
-    for(int i = 2; i <= n - minusN; i++)
-        r += (k % i);
-
-    cout << r;
     return 0;
 }*/
