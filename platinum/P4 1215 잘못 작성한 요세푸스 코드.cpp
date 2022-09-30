@@ -1,6 +1,4 @@
-/*
 #include <iostream>
-#include <cmath>
 using namespace std;
 
 int main() {
@@ -10,36 +8,27 @@ int main() {
 
     long long n, k;
     cin >> n >> k;
-    if(n == 1)
-        cout << "0";
 
-    else {
- */
-/*       if (k > n)
-            swap(k, n);*//*
+    long long r = k * n;
+    long long length;
+    long long firstNum;
+    long long lastNum;
 
-
-        long long r = k * n;
-        long long prev = k;
-        long long cur;
-        for (int i = 2; i <= log2(k); i++) {
-            cur = k / i;
-            long long length = prev - cur;
-            r -= (i - 1) * ((length) * (prev - length + 1 + prev) / 2);
-            prev = cur;
+    for(int i = k; i >= 1;) {
+        firstNum = k / (i + 1) + 1;
+        lastNum = k / i;
+        if(lastNum > n) {
+            lastNum = n;
+            length = lastNum - firstNum + 1;
+            r -= i * (length * (firstNum + lastNum) / 2);
+            break;
         }
+        length = lastNum - firstNum + 1;
 
-        for (int i = 1; i <= prev; i++) {
-            r -= i * (k / i);
-        }
-
-        long long temp = 0;
-        for(int i = 1; i <= n; i++) {
-            temp += (k % i);
-        }
-
-        cout << temp << "\n";
-        cout << r;
+        r -= i * (length * (firstNum + lastNum) / 2);
+        i = k / ((k / i) + 1);
     }
+
+    cout << r;
     return 0;
-}*/
+}
