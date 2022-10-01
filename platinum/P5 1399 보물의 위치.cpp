@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 using namespace std;
 
@@ -145,9 +146,9 @@ int main() {
             if(remainNumber >= 9)
                 result.first += 8;
             if(remainNumber >= 10)
-                result.first -= 4;
+                result.second -= 4;
             if(remainNumber >= 11)
-                result.second -= 2;
+                result.first -= 2;
         }
 
         else if(m % 9 == 6) {
@@ -214,18 +215,4 @@ int main() {
     }
 
     return 0;
-}
-
-/*
- * forward 값의 규칙
- * m % 9값 - 나타나는 forward 값의 규칙
- * 1 - 1반복
- * 2 - 1 2 4 8 7 5 반복
- * 3 - 1 3 이후 9반복
- * 4 - 1 4 7 반복
- * 5 - 1 5 7 8 4 2 반복
- * 6 - 1 6 이후 9반복
- * 7 - 1 7 4 반복
- * 8 - 1 8 반복
- * 0(9) - 1 이후 9반복
- */
+}*/
