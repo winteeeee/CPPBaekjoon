@@ -13,10 +13,27 @@ int main() {
     for(int i = 0; i < t; i++) {
         cin >> k >> m;
         result = {0, 0};
-
-        long long cycleNumber = k / 4;
-        long long remainNumber = k % 4;
+        
+        long long remainNumber;
         if(m % 9 == 0) {
+            remainNumber = k % 5;
+            result.second++;
+
+            if(k > 1) {
+                if (remainNumber > 0)
+                    result.first += 9;
+                if (remainNumber > 1)
+                    result.second -= 9;
+                if (remainNumber > 2)
+                    result.first -= 9;
+                if (remainNumber > 3)
+                    result.second += 9;
+            }
+        }
+
+        else if(m % 9 == 1) {
+            remainNumber = k % 4;
+
             if(remainNumber == 1)
                 result.second= 1;
             else if(remainNumber == 2) {
@@ -25,38 +42,168 @@ int main() {
             }
             else if(remainNumber == 3)
                 result.first = 1;
-        }
-
-        else if(m % 9 == 1) {
 
         }
 
         else if(m % 9 == 2) {
+            remainNumber = k % 13;
 
+            if(remainNumber > 0)
+                result.second += 1;
+            if(remainNumber > 1)
+                result.first += 2;
+            if(remainNumber > 2)
+                result.second -= 4;
+            if(remainNumber > 3)
+                result.first -= 8;
+            if(remainNumber > 4)
+                result.second += 7;
+            if(remainNumber > 5)
+                result.first += 5;
+            if(remainNumber > 6)
+                result.second -= 1;
+            if(remainNumber > 7)
+                result.first -= 2;
+            if(remainNumber > 8)
+                result.second += 4;
+            if(remainNumber > 9)
+                result.first += 8;
+            if(remainNumber > 10)
+                result.second -= 7;
+            if(remainNumber > 11)
+                result.first -= 5;
         }
 
         else if(m % 9 == 3) {
+            remainNumber = k % 5;
+            result.second++;
+            if(k > 1)
+                result.first += 3;
 
+            if(k > 2) {
+                if(remainNumber > 0)
+                    result.second -= 9;
+                if(remainNumber > 1)
+                    result.first -= 9;
+                if(remainNumber > 2)
+                    result.second += 9;
+                if(remainNumber > 3)
+                    result.first += 9;
+            }
         }
 
         else if(m % 9 == 4) {
+            remainNumber = k % 13;
 
+            if(remainNumber > 0)
+                result.second += 1;
+            if(remainNumber > 1)
+                result.first += 4;
+            if(remainNumber > 2)
+                result.second -= 7;
+            if(remainNumber > 3)
+                result.first -= 1;
+            if(remainNumber > 4)
+                result.second += 4;
+            if(remainNumber > 5)
+                result.first += 7;
+            if(remainNumber > 6)
+                result.second -= 1;
+            if(remainNumber > 7)
+                result.first -= 4;
+            if(remainNumber > 8)
+                result.second += 7;
+            if(remainNumber > 9)
+                result.first += 1;
+            if(remainNumber > 10)
+                result.second -= 4;
+            if(remainNumber > 11)
+                result.first -= 7;
         }
 
         else if(m % 9 == 5) {
+            remainNumber = k % 11;
 
+            if(remainNumber > 0)
+                result.second += 1;
+            if(remainNumber > 1)
+                result.first += 5;
+            if(remainNumber > 2)
+                result.second -= 7;
+            if(remainNumber > 3)
+                result.first -= 8;
+            if(remainNumber > 4)
+                result.second += 4;
+            if(remainNumber > 5)
+                result.first += 2;
+            if(remainNumber > 6)
+                result.second -= 1;
+            if(remainNumber > 7)
+                result.first -= 5;
+            if(remainNumber > 8)
+                result.second += 7;
+            if(remainNumber > 9)
+                result.first += 8;
         }
 
         else if(m % 9 == 6) {
+            remainNumber = k % 5;
+            result.second++;
+            if(k > 1)
+                result.first += 6;
 
+            if(k > 2) {
+                if(remainNumber > 0)
+                    result.second -= 9;
+                if(remainNumber > 1)
+                    result.first -= 9;
+                if(remainNumber > 2)
+                    result.second += 9;
+                if(remainNumber > 3)
+                    result.first += 9;
+            }
         }
 
         else if(m % 9 == 7) {
+            remainNumber = k % 13;
 
+            if(remainNumber > 0)
+                result.second += 1;
+            if(remainNumber > 1)
+                result.first += 7;
+            if(remainNumber > 2)
+                result.second -= 4;
+            if(remainNumber > 3)
+                result.first -= 1;
+            if(remainNumber > 4)
+                result.second += 7;
+            if(remainNumber > 5)
+                result.first += 4;
+            if(remainNumber > 6)
+                result.second -= 1;
+            if(remainNumber > 7)
+                result.first -= 7;
+            if(remainNumber > 8)
+                result.second += 4;
+            if(remainNumber > 9)
+                result.first += 1;
+            if(remainNumber > 10)
+                result.second -= 7;
+            if(remainNumber > 11)
+                result.first -= 4;
         }
 
         else if(m % 9 == 8) {
+            remainNumber = k % 5;
 
+            if(remainNumber > 0)
+                result.second += 1;
+            if(remainNumber > 1)
+                result.first += 8;
+            if(remainNumber > 2)
+                result.second -= 1;
+            if(remainNumber > 3)
+                result.first -= 8;
         }
 
         cout << result.first << " " << result.second << "\n";
@@ -75,6 +222,6 @@ int main() {
  * 5 - 1 5 7 8 4 2 반복
  * 6 - 1 6 이후 9반복
  * 7 - 1 7 4 반복
- * 8 - 1 8
+ * 8 - 1 8 반복
  * 9 - 1 이후 9반복
  */
