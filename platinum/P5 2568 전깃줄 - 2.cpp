@@ -2,9 +2,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 vector<pair<int, int>> wire;
+bool comp(const pair<int, int> &a, const pair<int, int> &b) {
+    return a.second < b.second;
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -20,52 +25,48 @@ int main() {
     }
 
     sort(wire.begin(), wire.end());
-    vector<int> result;
-    int prevIdx = 0;
-    for(int i = 0; i < n; i++) {
-        pair<int, int> cur = wire[i];
+    vector<pair<int, int>> result;
+    vector<int> idx;
+    result.push_back(wire[0]);
+    idx.push_back(0);
 
-        if(wire[prevIdx].second > cur.second) {
-            result.push_back(cur.first);
-            continue;
+    for(int i = 1; i < n; i++) {
+        pair<int, int> cur = wire[i];
+        int lowerIdx = lower_bound(result.begin(), result.end(), cur, comp) - result.begin();
+
+        if(lowerIdx >= result.size()) {
+            result.push_back(cur);
+            idx.push_back(lowerIdx);
         }
 
-        if(i != n - 1) {
-            if(wire[i + 1].second < cur.second) {
-                result.push_back(cur.first);
-                if(prevIdx == 0)
-                    prevIdx = i + 1;
-                continue;
+        else {
+            if (result[lowerIdx].second > cur.second) {
+                result[lowerIdx] = cur;
+                idx.push_back(lowerIdx);
             }
         }
     }
 
-    int size = result.size();
-    cout << size << "\n";
-    for(int i = 0; i < size; i++)
-        cout << result[i] << "\n";
+    stack<int> s;
+    int size = result.size() - 1;
+    for(int i = idx.size() - 1; i >= 0; i--) {
+        if(idx[i] == size) {
+            s.push(wire[i].first);
+            size--;
+        }
+    }
+
+    cout << n - s.size() << "\n";
+    int i = 0;
+    for(; !s.empty(); i++) {
+        if(wire[i].first == s.top())
+            s.pop();
+        else
+            cout << wire[i].first << "\n";
+    }
+
+    for(; i < wire.size(); i++)
+        cout << wire[i].first << "\n";
 
     return 0;
-}
-
-*/
-/*
- * 아래 반례를 어떻게 처리할지 고민해볼것
-9
-1 50000
-2 4
-3 11
-4 12
-5 6
-6 3
-7 2
-8 9
-9 10
-
-5
-1
-3
-4
-6
-7
- */
+}*/
