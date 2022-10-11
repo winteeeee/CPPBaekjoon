@@ -15,7 +15,7 @@ public:
 class comp {
 public:
     bool operator()(const Edge &a, const Edge &b) {
-        return a.cost < b.cost;
+        return a.cost > b.cost;
     }
 };
 
@@ -45,27 +45,26 @@ int main() {
     sort(y.begin(), y.end());
     sort(z.begin(), z.end());
 
-    int result = 0;
     priority_queue<Edge, vector<Edge>, comp> h;
     for(int i = 0; i < n - 1; i++) {
-        h.push({x[i].second, x[i + 1].second, x[i].first - x[i + 1].first});
-        h.push({y[i].second, y[i + 1].second, y[i].first - y[i + 1].first});
-        h.push({z[i].second, z[i + 1].second, z[i].first - z[i + 1].first});
+        h.push({x[i].second, x[i + 1].second, abs(x[i].first - x[i + 1].first)});
+        h.push({y[i].second, y[i + 1].second, abs(y[i].first - y[i + 1].first)});
+        h.push({z[i].second, z[i + 1].second, abs(z[i].first - z[i + 1].first)});
     }
 
     for(int i = 0; i < n; i++)
         set[i] = i;
 
+    int result = 0;
     while(!h.empty()) {
-        Edge cur = h.top();
-        h.pop();
+        Edge cur = h.top(); h.pop();
         if(!isCycle(cur.a, cur.b)) {
-
+            result += cur.cost;
+            addSet(cur.a, cur.b);
         }
     }
 
-
-
+    cout << result;
     return 0;
 }
 
@@ -89,4 +88,5 @@ void addSet(int a, int b) {
 
 bool isCycle(int a, int b) {
     return find(a) == find(b);
-}*/
+}
+*/
