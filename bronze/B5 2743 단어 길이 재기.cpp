@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <string>
 using namespace std;
@@ -12,4 +13,4 @@ int main() {
     cout << temp.size();
 
     return 0;
-}
+}*/
