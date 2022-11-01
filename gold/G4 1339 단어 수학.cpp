@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -12,6 +13,13 @@ int main() {
     vector<string> word(n);
     for(int i = 0; i < n; i++)
         cin >> word[i];
+    pair<int, int> sizes[n]; //size, idx
+    for(int i = 0; i < n; i++)
+        sizes[i] = {word[i].size(), i};
+
+    sort(sizes, sizes + n, greater<pair<int, int>>());
+
+
 
     return 0;
 }
