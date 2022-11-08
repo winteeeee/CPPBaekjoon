@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 typedef long long ll;
 using namespace std;
@@ -16,4 +17,4 @@ int main() {
 }
 ll cal(ll a, ll b) {
     return (a + b) * (a - b);
-}
+}*/
