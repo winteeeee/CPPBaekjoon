@@ -23,15 +23,33 @@ int main() {
     }
 
     int result = INT_MAX;
+    vector<int> combination;
+    for(int i = 0; i < n / 2; i++) {
+        combination.push_back(1);
+    }
+    for(int i = n / 2; i < n; i++) {
+        combination.push_back(0);
+    }
+    sort(combination.begin(), combination.end());
 
     do {
         int start = 0;
         int link = 0;
 
-        for(int i = 0; i < p.size() / 2; i++) {
-            for(int j = i + 1; j < p.size() / 2; j++) {
-                start += (table[p[i]][p[j]] + table[p[j]][p[i]]);
-                link += (table[p[i + p.size() / 2]][p[j + p.size() / 2]] + table[p[j + p.size() / 2]][p[i + p.size() / 2]]);
+        vector<int> startIdx;
+        vector<int> linkIdx;
+        for(int i = 0; i < n; i++) {
+            if(combination[i] == 1)
+                startIdx.push_back(p[i]);
+            else
+                linkIdx.push_back(p[i]);
+        }
+
+
+        for(int i = 0; i < n / 2; i++) {
+            for(int j = i + 1; j < n / 2; j++) {
+                start += (table[startIdx[i]][startIdx[j]] + table[startIdx[j]][startIdx[i]]);
+                link += (table[linkIdx[i]][linkIdx[j]] + table[linkIdx[j]][linkIdx[i]]);
             }
         }
 
@@ -39,7 +57,7 @@ int main() {
         if(result > temp) {
             result = temp;
         }
-    } while(next_permutation(p.begin(), p.end()));
+    } while(next_permutation(combination.begin(), combination.end()));
 
     cout << result;
     return 0;
