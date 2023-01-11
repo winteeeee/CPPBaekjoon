@@ -1,16 +1,23 @@
-#include <iostream>
-using namespace std;
-
-bool table[10][10];
-int xRange[5] {-1, 1, 0, 0, 0};
-int yRange[5] {0, 0, -1, 1, 0};
+/*
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int n;
 int answer = -1;
-vector<bool> cur, target;
+bool table[10][10];
+bool curTable[10][10];
+int xRange[5] {-1, 1, 0, 0, 0};
+int yRange[5] {0, 0, -1, 1, 0};
+
+void assign() {
+    for(int i = 0; i < 10; i++) {
+        for(int j = 0; j < 10; j++) {
+            curTable[i][j] = table[i][j];
+        }
+    }
+}
 
 void input() {
     char temp;
@@ -28,12 +35,14 @@ void input() {
             }
         }
     }
+
+    assign();
 }
 
 void convertSwitch(int i, int j) {
     for(int k = 0; k < 5; k++) {
         if((0 <= i + yRange[k] && i + yRange[k] < 10) && (0 <= j + xRange[k] && j + xRange[k] < 10)) {
-            table[i + yRange[k]][j + xRange[k]] = !table[i + yRange[k]][j + xRange[k]];
+            curTable[i + yRange[k]][j + xRange[k]] = !curTable[i + yRange[k]][j + xRange[k]];
         }
     }
 }
@@ -41,10 +50,12 @@ void convertSwitch(int i, int j) {
 int counting() {
     int result = 0;
 
-    for(int i = 1; i < n; i++) {
-        if(cur[i - 1] != target[i - 1]) {
-            convertSwitch(i);
-            result++;
+    for(int i = 1; i < 10; i++) {
+        for(int j = 0; j < 10; j++) {
+            if(curTable[i - 1][j]) {
+                convertSwitch(i, j);
+                result++;
+            }
         }
     }
 
@@ -54,7 +65,7 @@ int counting() {
 bool isOff() {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 10; j++) {
-            if(table[i][j]) {
+            if(curTable[i][j]) {
                 return false;
             }
         }
@@ -64,25 +75,34 @@ bool isOff() {
 }
 
 void solve() {
-    vector<bool> temp = cur;
-    int curCount;
-
-    curCount = counting();
-    if(isOff()) {
-        answer = curCount;
-    }
-
-    cur = temp;
-    convertSwitch(0);
-    curCount = counting() + 1;
-    if(isOff()) {
-        if(answer != -1) {
-            answer = min(answer, curCount);
+    for(int i = 0; i <= 10; i++) { //i개를 택한다.
+        vector<int> combination(10);
+        for(int j = 0; j < i; j++) {
+            combination[9 - j] = 1;
         }
 
-        else {
-            answer = curCount;
-        }
+        do {
+            for(int j = 0; j < 10; j++) { //선택된 1째줄 전구를 누름
+                if(combination[j]) {
+                    convertSwitch(0, j);
+                }
+            }
+
+            int curCount;
+
+            curCount = counting() + i;
+            if(isOff()) {
+                if(answer == -1) {
+                    answer = curCount;
+                }
+
+                else {
+                    answer = min(answer, curCount);
+                }
+            }
+
+            assign();
+        } while(next_permutation(combination.begin(), combination.end()));
     }
 
     cout << answer;
@@ -97,41 +117,4 @@ int main() {
     solve();
 }
 
-
-/*
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-
-#O########
-OOO#######
-#O########
-####OO####
-###O##O###
-####OO####
-##########
-########O#
-#######OOO
-########O#
- 4
-
-O########O
-#OOOOOOOO#
-#OOOOOOOO#
-#OOOOOOOO#
-#OOOOOOOO#
-#OOOOOOOO#
-#OOOOOOOO#
-#OOOOOOOO#
-#OOOOOOOO#
-O########O
- 100
- */
-
+*/
