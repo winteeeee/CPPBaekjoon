@@ -4,20 +4,13 @@ using namespace std;
 bool table[10][10];
 int xRange[5] {-1, 1, 0, 0, 0};
 int yRange[5] {0, 0, -1, 1, 0};
-void input();
-void solve();
-void convertSwitch(int i, int j);
-void print();
-long long answer;
+#include <iostream>
+#include <vector>
+using namespace std;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    input();
-    solve();
-}
+int n;
+int answer = -1;
+vector<bool> cur, target;
 
 void input() {
     char temp;
@@ -37,10 +30,6 @@ void input() {
     }
 }
 
-void solve() {
-
-}
-
 void convertSwitch(int i, int j) {
     for(int k = 0; k < 5; k++) {
         if((0 <= i + yRange[k] && i + yRange[k] < 10) && (0 <= j + xRange[k] && j + xRange[k] < 10)) {
@@ -49,21 +38,65 @@ void convertSwitch(int i, int j) {
     }
 }
 
-void print() {
+int counting() {
+    int result = 0;
+
+    for(int i = 1; i < n; i++) {
+        if(cur[i - 1] != target[i - 1]) {
+            convertSwitch(i);
+            result++;
+        }
+    }
+
+    return result;
+}
+
+bool isOff() {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 10; j++) {
             if(table[i][j]) {
-                cout << 'O';
-            }
-
-            else {
-                cout << '#';
+                return false;
             }
         }
-        cout << '\n';
     }
-    cout << '\n';
+
+    return true;
 }
+
+void solve() {
+    vector<bool> temp = cur;
+    int curCount;
+
+    curCount = counting();
+    if(isOff()) {
+        answer = curCount;
+    }
+
+    cur = temp;
+    convertSwitch(0);
+    curCount = counting() + 1;
+    if(isOff()) {
+        if(answer != -1) {
+            answer = min(answer, curCount);
+        }
+
+        else {
+            answer = curCount;
+        }
+    }
+
+    cout << answer;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    input();
+    solve();
+}
+
 
 /*
 ##########
