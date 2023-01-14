@@ -3,4 +3,4 @@ project(Baekjoon)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Baekjoon "ICPC/A.cpp" "ICPC/C.cpp" "ICPC/G.cpp")
+add_executable(Baekjoon "ICPC/A.cpp" "ICPC/C.cpp" "ICPC/G.cpp" "boardGameCup_1/A번 - 노 땡스!.cpp")
