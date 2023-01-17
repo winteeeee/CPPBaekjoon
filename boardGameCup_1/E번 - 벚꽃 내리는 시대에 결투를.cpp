@@ -17,18 +17,19 @@ void input() {
         cin >> x >> y;
 
         v[i] = {x, y};
+    }
+}
 
+void dpInit() {
+    for(int i = 0; i < 5001; i++) {
         for(int j = 0; j < 5001; j++) {
             dp[i][j] = INT_MIN;
         }
     }
-
-    for(int j = 0; j < 5001; j++) {
-        dp[n][j] = INT_MIN;
-    }
 }
 
 void solve() {
+    dpInit();
     const bool A = 0;
     const bool L = 1;
     dp[0][l] = a;
@@ -38,26 +39,23 @@ void solve() {
 
         for(int life = 1; life <= l; life++) {
             if(dp[i][life] != INT_MIN) {
-                if (attack.first == -1 && life - attack.second > 0) {
-                    dp[i + 1][life - attack.second] = max(dp[i][life], dp[i + 1][life - attack.second]);
-                    path[life - attack.second] = path[life];
-                    path[life - attack.second].push_back(L);
+                if (attack.first == -1) {
+                    if(life - attack.second > 0) {
+                        dp[i + 1][life - attack.second] = dp[i][life];
+                        (path[life - attack.second] = path[life]).push_back(L);
+                    }
                 } else if (attack.second == -1) {
-                    dp[i + 1][life] = max(dp[i + 1][life], max(dp[i][life] - attack.first, 0));
+                    dp[i + 1][life] =  max(dp[i][life] - attack.first, 0);
                     path[life].push_back(A);
                 } else {
                     if (life - attack.second > 0) {
-                        dp[i + 1][life - attack.second] = max(dp[i][life], dp[i + 1][life - attack.second]);
-                        path[life - attack.second] = path[life];
-                        path[life - attack.second].push_back(L);
+                        dp[i + 1][life - attack.second] = dp[i][life];
+                        (path[life - attack.second] = path[life]).push_back(L);
                     }
 
-                    if (dp[i][life] >= attack.first) {
-                        dp[i + 1][life] = max(dp[i][life] - attack.first, dp[i + 1][life]);
-
-                        if(attack.second != 0) {
-                            path[life].push_back(A);
-                        }
+                    if (dp[i][life] >= attack.first && attack.second != 0) {
+                        dp[i + 1][life] = dp[i][life] - attack.first;
+                        path[life].push_back(A);
                     }
                 }
             }
