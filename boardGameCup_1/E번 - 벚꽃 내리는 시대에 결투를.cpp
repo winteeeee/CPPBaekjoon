@@ -5,8 +5,8 @@
 using namespace std;
 
 int n, a, l;
-vector<pair<int, int>> v(5001);
-vector<bool> path[5001];
+pair<int, int> v[5001];
+vector<vector<bool>> path(5001, vector<bool>(5001));
 int dp[5001][5001];
 
 void input() {
@@ -42,20 +42,20 @@ void solve() {
                 if (attack.first == -1) {
                     if(life - attack.second > 0) {
                         dp[i + 1][life - attack.second] = dp[i][life];
-                        (path[life - attack.second] = path[life]).push_back(L);
+                        path[i + 1][life - attack.second] = L;
                     }
                 } else if (attack.second == -1) {
                     dp[i + 1][life] =  max(dp[i][life] - attack.first, 0);
-                    path[life].push_back(A);
+                    path[i + 1][life] = A;
                 } else {
                     if (life - attack.second > 0) {
                         dp[i + 1][life - attack.second] = dp[i][life];
-                        (path[life - attack.second] = path[life]).push_back(L);
+                        path[i + 1][life - attack.second] = L;
                     }
 
-                    if (dp[i][life] >= attack.first && attack.second != 0) {
+                    if (dp[i][life] >= attack.first && attack.second != 0) {    //attack.second != 0 필요하지 않나?
                         dp[i + 1][life] = dp[i][life] - attack.first;
-                        path[life].push_back(A);
+                        path[i + 1][life] = A;
                     }
                 }
             }
@@ -66,16 +66,23 @@ void solve() {
         if(dp[n][life] >= 0) {
             cout << "YES\n";
 
-            string resultPath;
-            for(int i = 0; i < path[life].size(); i++) {
-                if(path[life][i]) {
-                    resultPath += "L";
+            vector<char> resultPath;
+            int curLife = life;
+            for(int i = n; i >= 0; i--) {
+                if(path[i][curLife]) {
+                    resultPath.push_back('L');
                 } else {
-                    resultPath += "A";
+                    resultPath.push_back('A');
+                }
+
+                if(path[i][curLife]) {
+                    curLife -= v[i].second;
                 }
             }
 
-            cout << resultPath;
+            for(int i = 0; i < resultPath.size(); i++) {
+                cout << resultPath[i];
+            }
             exit(0);
         }
     }
