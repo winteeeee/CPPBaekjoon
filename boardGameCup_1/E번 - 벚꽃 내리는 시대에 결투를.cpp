@@ -1,7 +1,9 @@
+/*
 #include <iostream>
 #include <vector>
 #include <string>
 #include <climits>
+#include <stack>
 using namespace std;
 
 int n, a, l;
@@ -15,7 +17,6 @@ void input() {
     for(int i = 0; i < n; i++) {
         int x, y;
         cin >> x >> y;
-
         v[i] = {x, y};
     }
 }
@@ -40,20 +41,24 @@ void solve() {
         for(int life = 1; life <= l; life++) {
             if(dp[i][life] != INT_MIN) {
                 if (attack.first == -1) {
-                    if(life - attack.second > 0) {
+                    if(life - attack.second > 0 && dp[i + 1][life - attack.second] < dp[i][life]) {
                         dp[i + 1][life - attack.second] = dp[i][life];
                         path[i + 1][life - attack.second] = L;
                     }
                 } else if (attack.second == -1) {
-                    dp[i + 1][life] =  max(dp[i][life] - attack.first, 0);
-                    path[i + 1][life] = A;
+                    int val = max(dp[i][life] - attack.first, 0);
+
+                    if(dp[i + 1][life] < val) {
+                        dp[i + 1][life] = val;
+                        path[i + 1][life] = A;
+                    }
                 } else {
-                    if (life - attack.second > 0) {
+                    if (life - attack.second > 0 && dp[i + 1][life - attack.second] < dp[i][life]) {
                         dp[i + 1][life - attack.second] = dp[i][life];
                         path[i + 1][life - attack.second] = L;
                     }
 
-                    if (dp[i][life] >= attack.first && attack.second != 0) {    //attack.second != 0 필요하지 않나?
+                    if (dp[i][life] >= attack.first && dp[i + 1][life] < dp[i][life] - attack.first) {
                         dp[i + 1][life] = dp[i][life] - attack.first;
                         path[i + 1][life] = A;
                     }
@@ -66,23 +71,21 @@ void solve() {
         if(dp[n][life] >= 0) {
             cout << "YES\n";
 
-            vector<char> resultPath;
+            stack<char> s;
             int curLife = life;
-            for(int i = n; i >= 0; i--) {
+            for(int i = n; i > 0; i--) {
                 if(path[i][curLife]) {
-                    resultPath.push_back('L');
+                    s.push('L');
+                    curLife += v[i - 1].second;
                 } else {
-                    resultPath.push_back('A');
-                }
-
-                if(path[i][curLife]) {
-                    curLife -= v[i].second;
+                    s.push('A');
                 }
             }
 
-            for(int i = 0; i < resultPath.size(); i++) {
-                cout << resultPath[i];
+            while(!s.empty()) {
+                cout << s.top(); s.pop();
             }
+
             exit(0);
         }
     }
@@ -97,4 +100,4 @@ int main() {
 
     input();
     solve();
-}
+}*/
