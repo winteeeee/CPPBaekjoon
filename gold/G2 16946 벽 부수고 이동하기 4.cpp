@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -49,17 +50,18 @@ void dfs(int r, int c, vector<pair<int, int>> &wallPath, int &wallPathIndex, vec
 void makeResult() {
     vector<vector<bool>> visited(1000, vector<bool>(1000));
     vector<pair<int, int>> wallPath(1000000);
+    vector<vector<bool>> wallVisited(1000, vector<bool>(1000));
     int wallPathIndex = 0;
     int count = 1;
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
             if(!isWall[i][j] && !visited[i][j]) {
-                vector<vector<bool>> wallVisited(1000, vector<bool>(1000));
                 dfs(i, j, wallPath, wallPathIndex, wallVisited, visited, count);
 
                 for(int k = 0; k < wallPathIndex; k++) {
                     isWall[wallPath[k].first][wallPath[k].second] += count;
+                    wallVisited[wallPath[k].first][wallPath[k].second] = 0;
                 }
 
                 count = 1;
@@ -87,4 +89,4 @@ int main() {
 
     input();
     solve();
-}
+}*/
