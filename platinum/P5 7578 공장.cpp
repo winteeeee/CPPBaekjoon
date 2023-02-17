@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -33,13 +34,26 @@ void merge(int start, int mid, int end) {
     int leftIndex = start;
     int rightIndex = mid + 1;
 
-    while(leftIndex < mid + 1 && rightIndex < end) {
+    while(leftIndex < mid + 1 && rightIndex <= end) {
         if (arr[leftIndex] < arr[rightIndex]) {
             temp.push_back(arr[leftIndex++]);
         } else {
             temp.push_back(arr[rightIndex++]);
             count += (mid - leftIndex + 1);
         }
+    }
+
+    while(leftIndex < mid + 1) {
+        temp.push_back(arr[leftIndex++]);
+    }
+
+    while(rightIndex <= end) {
+        temp.push_back(arr[rightIndex++]);
+        count += (mid - leftIndex + 1);
+    }
+
+    for(int i = 0; i < temp.size(); i++) {
+        arr[start + i] = temp[i];
     }
 }
 
@@ -69,4 +83,4 @@ int main() {
     input();
     solve();
     return 0;
-}
+}*/
