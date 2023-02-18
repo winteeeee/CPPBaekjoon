@@ -1,4 +1,3 @@
-/*
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -38,15 +37,17 @@ void solve() {
         if (cur.A == 1) {   //꺼내기
             cout << candyBox[cur.B] << '\n';
             copy(candyBox.begin() + cur.B + 1, candyBox.end(), candyBox.begin() + cur.B);
+            candyBox.pop_back();
         } else {    //넣기
             if (cur.C > 0) {    //넣기
-                for (int j = 0; j < cur.C; j++) {
-                    candyBox.push_back(cur.B);
-                }
+                vector<int> temp(cur.C, cur.B);
+                candyBox.resize(candyBox.size() + cur.C);
+                copy(temp.begin(), temp.end(), candyBox.end() - cur.C);
                 sort(candyBox.begin(), candyBox.end());
             } else {    //꺼내기
                 int targetIndex = lower_bound(candyBox.begin(), candyBox.end(), cur.B) - candyBox.begin();
                 copy(candyBox.begin() + targetIndex + (cur.C * -1), candyBox.end(), candyBox.begin() + targetIndex);
+                candyBox.resize(candyBox.size() + cur.C);
             }
         }
     }
@@ -61,4 +62,3 @@ int main() {
     solve();
     return 0;
 }
-*/
