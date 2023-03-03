@@ -4,22 +4,86 @@ using namespace std;
 
 int t, n, m;
 vector<int> movie;
+vector<int> idx;
+vector<int> tree;
 
 void input() {
     cin >> n >> m;
-    movie.reserve(n);
+    movie = vector<int>(m);
+    idx = vector<int>(n + 1);
+    tree = vector<int>((n + m) * 4);
 
     for(int i = 0; i < m; i++) {
         cin >> movie[i];
     }
+
+    for(int i = 0; i < n; i++) {
+        idx[i + 1] = m + i;
+    }
+}
+
+int makeTree(int start, int end, int index) {
+    if (start == end) {
+        if (start < m) {
+            return tree[index] = 0;
+        } else {
+            return tree[index] = 1;
+        }
+    }
+
+    int mid = (start + end) / 2;
+    int left = makeTree(start, mid, index * 2);
+    int right = makeTree(mid + 1, end, index * 2 + 1);
+
+    return tree[index] = left + right;
+}
+
+int sum(int start, int end, int targetL, int targetR, int index) {
+    if (targetR < start || targetL > end) {
+        return 0;
+    }
+
+    if (targetL <= start && end <= targetR) {
+        return tree[index];
+    }
+
+    int mid = (start + end) / 2;
+    int left = sum(start, mid, targetL, targetR, index * 2);
+    int right = sum(mid + 1, end, targetL, targetR, index * 2 + 1);
+
+    return left + right;
+}
+
+int update(int start, int end, int targetRange, int val, int index) {
+    if (targetRange < start || targetRange > end) {
+        return tree[index];
+    }
+
+    if (start == end && start == targetRange) {
+        return tree[index] = val;
+    }
+
+    int mid = (start + end) / 2;
+    int left = update(start, mid, targetRange, val, index * 2);
+    int right = update(mid + 1, end, targetRange, val, index * 2 + 1);
+
+    return tree[index] = left + right;
 }
 
 void solve() {
     cin >> t;
 
-    for(int i = 0; i < t; i++) {
+    for (int i = 0; i < t; i++) {
         input();
-        //i번째 인덱스가 선택되면 0 ~ i - 1번째 인덱스의 값을 증가시키고 i번째 인덱스는 값을 0으로 만드는 쿼리를 logN으로 구현
+        makeTree(1, n + m, 1);
+
+        for (int j = 0; j < m; j++) {
+            cout << sum(1, n + m, 1, idx[movie[j]] - 1, 1) << " ";
+            update(1, n + m, idx[movie[j]], 0, 1);
+            idx[movie[j]] = (m - 1) - j;
+            update(1, n + m, idx[movie[j]], 1, 1);
+        }
+        cout << '\n';
     }
 }
 
@@ -28,7 +92,6 @@ int main() {
     cin.tie(NULL);
     cout.tie(NULL);
 
-    input();
     solve();
     return 0;
 }
