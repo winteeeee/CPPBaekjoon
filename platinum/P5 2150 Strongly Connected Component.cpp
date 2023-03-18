@@ -5,6 +5,7 @@ using namespace std;
 
 int v, e, numberOfSCC;
 vector<vector<int>> graph(10001);
+vector<vector<int>> inverseGraph(10001);
 vector<int> inDegree(10001);
 vector<int> topologicalSequence;
 
@@ -37,6 +38,7 @@ void topologicalSort() {
 
             if (!inDegree[graph[cur][i]]) {
                 s.push(graph[cur][i]);
+                topologicalSequence.push_back(graph[cur][i]);
             }
         }
     }
