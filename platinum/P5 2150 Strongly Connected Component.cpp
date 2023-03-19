@@ -1,13 +1,17 @@
+/*
 #include <iostream>
 #include <vector>
-#include <stack>
+#include <algorithm>
 using namespace std;
 
 int v, e, numberOfSCC;
 vector<vector<int>> graph(10001);
-vector<vector<int>> inverseGraph(10001);
+vector<vector<int>> reverseGraph(10001);
 vector<int> inDegree(10001);
 vector<int> topologicalSequence;
+vector<bool> topologicalVisited(10001);
+vector<bool> visited(10001);
+vector<vector<int>> result(10001);
 
 void input() {
     cin >> v >> e;
@@ -16,48 +20,69 @@ void input() {
         int a, b;
         cin >> a >> b;
         graph[a].push_back(b);
+        reverseGraph[b].push_back(a);
         inDegree[a]++;
     }
 }
 
-void topologicalSort() {
-    stack<int> s;
+void topologicalDFS(int start) {
+    topologicalVisited[start] = true;
 
-    for (int i = 1; i <= v; i++) {   //진입 차수가 0인 정점 탐색
-        if (!inDegree[i]) {
-            s.push(i);
-            topologicalSequence.push_back(i);
+    for (int i = 0; i < graph[start].size(); i++) {
+        if (!topologicalVisited[graph[start][i]]) {
+            topologicalDFS(graph[start][i]);
         }
     }
 
-    while (!s.empty()) {
-        int cur = s.top(); s.pop();
+    topologicalSequence.push_back(start);
+}
 
-        for (int i = 0; i < graph[cur].size(); i++) {
-            inDegree[graph[cur][i]]--;
-
-            if (!inDegree[graph[cur][i]]) {
-                s.push(graph[cur][i]);
-                topologicalSequence.push_back(graph[cur][i]);
-            }
+void topologicalSort() {
+    for (int i = 1; i <= v; i++) {
+        if (!topologicalVisited[i]) {
+            topologicalDFS(i);
         }
     }
 }
 
-void makeInverseGraph() {
+void DFS(int start) {
+    visited[start] = true;
 
+    for (int i = 0; i < reverseGraph[start].size(); i++) {
+        if (!visited[reverseGraph[start][i]]) {
+            result[numberOfSCC].push_back(reverseGraph[start][i]);
+            DFS(reverseGraph[start][i]);
+        }
+    }
 }
 
 void extractSCC() {
-
+    for (int i = topologicalSequence.size() - 1; i >= 0; i--) {
+        if (!visited[topologicalSequence[i]]) {
+            result[numberOfSCC].push_back(topologicalSequence[i]);
+            DFS(topologicalSequence[i]);
+            numberOfSCC++;
+        }
+    }
 }
 
 void solve() {
     topologicalSort();
-    makeInverseGraph();
     extractSCC();
 
-    cout << numberOfSCC;
+    cout << numberOfSCC << '\n';
+    for (int i = 0; i < numberOfSCC; i++) {
+        sort(result[i].begin(), result[i].end());
+    }
+
+    sort(result.begin(), result.begin() + numberOfSCC);
+
+    for (int i = 0; i < numberOfSCC; i++) {
+        for (int j = 0; j < result[i].size(); j++) {
+            cout << result[i][j] << " ";
+        }
+        cout << "-1\n";
+    }
 }
 
 int main() {
@@ -68,4 +93,4 @@ int main() {
     input();
     solve();
     return 0;
-}
+}*/
