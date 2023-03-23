@@ -1,53 +1,68 @@
-#include <iostream>
-#include <vector>
-#include <stack>
-using namespace std;
+    /*
+    #include <iostream>
+    #include <vector>
+    #include <stack>
+    using namespace std;
 
-int n;
-long long result;
-vector<int> arr;
+    int n;
+    long long result;
+    vector<int> arr;
 
-void input() {
-    cin >> n;
+    class human {
+    public:
+        int height;
+        int num;
+    };
 
-    for (int i = 0; i < n; i++) {
-        int temp;
-        cin >> temp;
-        arr.push_back(temp);
-    }
-}
+    void input() {
+        cin >> n;
 
-void solve() {
-    stack<int> s;
-
-    for (int i = 0; i < n; i++) {
-        if (s.empty()) {
-            s.push(arr[i]);
-        } else {
-            for (int top = s.top(); !s.empty() && top < arr[i];) {
-                result++;
-                s.pop();
-
-                if (!s.empty()) {
-                    top = s.top();
-                }
-            }
-
-            result += s.size();
-            s.push(arr[i]);
+        for (int i = 0; i < n; i++) {
+            int temp;
+            cin >> temp;
+            arr.push_back(temp);
         }
     }
 
-    cout << result;
-}
+    void solve() {
+        stack<human> s;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+        for (int i = 0; i < n; i++) {
+            if (s.empty()) {
+                s.push({arr[i], 1});
+            } else {
+                for (human top = s.top(); !s.empty() && top.height < arr[i];) {
+                    result += (s.top().num);
+                    s.pop();
 
-    input();
-    solve();
+                    if (!s.empty()) {
+                        top = s.top();
+                    }
+                }
 
-    return 0;
-}
+                if (!s.empty() && s.top().height == arr[i]) {
+                    result += s.top().num;
+                    s.top().num++;
+                } else {
+                    s.push({arr[i], 1});
+                }
+
+                if (!(s.empty() || s.size() == 1)) {
+                    result++;
+                }
+            }
+        }
+
+        cout << result;
+    }
+
+    int main() {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        cout.tie(NULL);
+
+        input();
+        solve();
+
+        return 0;
+    }*/
