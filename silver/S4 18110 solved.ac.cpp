@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 using namespace std;
 
 int n;
@@ -20,6 +21,7 @@ void input() {
 }
 
 void solve() {
+    sort(rating.begin(), rating.end());
     int exceptionCount = floor(rating.size() * 0.15 + 0.5);
     int sum = 0;
     int length = rating.size() - 2 * exceptionCount;
@@ -28,8 +30,11 @@ void solve() {
         sum += rating[i + exceptionCount];
     }
 
-    cout << floor((double)sum / length + 0.5);
-    //n이 0일 때 예외처리
+    if (length > 0) {
+        cout << floor((double) sum / length + 0.5);
+    } else {
+        cout << 0;
+    }
 }
 
 int main() {
