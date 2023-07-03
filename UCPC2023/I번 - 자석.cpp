@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 using namespace std;
 
@@ -27,4 +28,4 @@ int main() {
     }
 
     cout << max(result1, result2);
-}
+}*/
