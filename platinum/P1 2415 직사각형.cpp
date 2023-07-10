@@ -15,26 +15,38 @@ class Segment {
 public:
     Coord a;
     Coord b;
-    double slope;
     double getSize() const {
         return pow(pow((b.y - a.y), 2) + pow((b.x - a.x), 2), 0.5);
     }
 };
 
 int n;
-long long result1, result2;
+long long result;
 vector<Coord> coord;
-vector<Segment> slopeZero;
-vector<Segment> slopeInf;
-vector<Segment> slopePlus;
-vector<Segment> slopeMinus;
+vector<Segment> segment;
 
 bool comp (const Segment& a, const Segment& b) {
-    return a.slope == b.slope ? a.getSize() < b.getSize() : a.slope < b.slope;
+    if (a.a.x == b.a.x) {
+        if (a.a.y == b.a.y) {
+            if (a.b.x == b.b.x) {
+                return a.b.y < b.b.y;
+            } else {
+                return a.b.x < b.b.x;
+            }
+        } else {
+            return a.a.y < b.a.y;
+        }
+    } else {
+        return a.a.x < b.a.x;
+    }
 }
 
 bool operator == (const Coord& a, const Coord& b) {
     return a.x == b.x && a.y == b.y;
+}
+
+bool operator == (const Segment& a, const Segment& b) {
+    return a.a == b.a && a.b == b.b;
 }
 
 long long findArea(const Segment& a, const Segment& b) {
@@ -48,7 +60,19 @@ long long innerProduct(const Segment& a, const Segment& b) {
 }
 
 bool isRectangle(const Segment& a, const Segment& b) {
+    if (a == b) {
+        return false;
+    }
+
     return ((a.a == b.a) || (a.a == b.b) || (a.b == b.a) || (a.b == b.b)) && (innerProduct(a, b) == 0);
+}
+
+Coord findIntersection(const Segment& a, const Segment& b) {
+    if (a.a == b.a || a.a == b.b) {
+        return a.a;
+    } else {
+        return a.b;
+    }
 }
 
 int main() {
@@ -60,86 +84,53 @@ int main() {
     for (int i = 0; i < n; i++) {
         long long a, b;
         cin >> a >> b;
+
         coord.push_back({a, b});
     }
 
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
-            if (coord[i].x == coord[j].x) {
-                slopeInf.push_back({coord[i], coord[j], INT_MAX});
-            } else if (coord[i].y == coord[j].y) {
-                slopeZero.push_back({coord[i], coord[j], 0});
+            if (coord[i].x == coord[j].x ? coord[i].y < coord[j].y : coord[i].x < coord[j].x) {
+                segment.push_back({coord[i], coord[j]});
             } else {
-                double temp = (double)(coord[i].y - coord[j].y) / (double)(coord[i].x - coord[j].x);
-                if (temp > 0) {
-                    slopePlus.push_back({coord[i], coord[j], temp});
-                } else {
-                    slopeMinus.push_back({coord[i], coord[j], temp});
-                }
-
+                segment.push_back({coord[j], coord[i]});
             }
         }
     }
 
-    sort(slopePlus.begin(), slopePlus.end(), comp);
-    sort(slopeMinus.begin(), slopeMinus.end(), comp);
-    sort(slopeZero.begin(), slopeZero.end(), comp);
-    sort(slopeInf.begin(), slopeInf.end(), comp);
+    sort(segment.begin(), segment.end(), comp);
 
-    for (int i = 0; i < slopePlus.size(); i++) {
-        for (int j = 0; j < slopeMinus.size(); j++) {
-            if (isRectangle(slopePlus[i], slopeMinus[j])) {
-                bool isFind1 = false;
-                bool isFind2 = false;
+    for (int i = 0; i < segment.size(); i++) {
+        for (int j = i + 1; j < segment.size() && segment[i].a == segment[j].a; j++) {
+            if (isRectangle(segment[i], segment[j])) {
+                Segment a = segment[i];
+                Segment b = segment[j];
+                Segment c = {};
+                Segment d = {};
+                int point1Idx = lower_bound(segment.begin(), segment.end(), Segment{a.b}, comp) - segment.begin();
+                int point2Idx = lower_bound(segment.begin(), segment.end(), Segment{b.b}, comp) - segment.begin();
 
-                for (int k = i + 1; k < slopePlus.size() && slopePlus[i].getSize() == slopePlus[k].getSize() && slopePlus[i].slope == slopePlus[k].slope; k++) {
-                    if (isRectangle(slopePlus[k], slopeMinus[j])) {
-                        isFind1 = true;
+                for (int k = point1Idx; k < segment.size() && segment[k].a == a.b; k++) {
+                    if (isRectangle(a, segment[k]) && b.getSize() == segment[k].getSize()) {
+                        c = segment[k];
                         break;
                     }
                 }
 
-                for (int k = j + 1; k < slopeMinus.size() && slopeMinus[j].getSize() == slopeMinus[k].getSize() && slopeMinus[j].slope == slopeMinus[k].slope; k++) {
-                    if (isRectangle(slopePlus[i], slopeMinus[k])) {
-                        isFind2 = true;
+                for (int k = point2Idx; k < segment.size() && segment[k].a == b.b; k++) {
+                    if (isRectangle(b, segment[k]) && a.getSize() == segment[k].getSize()) {
+                        d = segment[k];
                         break;
                     }
                 }
 
-                if (isFind1 && isFind2) {
-                    result1 = max(result1, findArea(slopePlus[i], slopeMinus[j]));
+                if (isRectangle(a, b) && isRectangle(a, c) && isRectangle(b, d) && isRectangle(c, d)) {
+                    result = max(result, findArea(a, b));
                 }
             }
         }
     }
 
-    for (int i = 0; i < slopeZero.size(); i++) {
-        for (int j = 0; j < slopeInf.size(); j++) {
-            if (isRectangle(slopeZero[i], slopeInf[j])) {
-                bool isFind1 = false;
-                bool isFind2 = false;
-
-                for (int k = i + 1; k < slopeZero.size() && slopeZero[i].getSize() == slopeZero[k].getSize(); k++) {
-                    if (isRectangle(slopeZero[k], slopeInf[j])) {
-                        isFind1 = true;
-                        break;
-                    }
-                }
-
-                for (int k = j + 1; k < slopeInf.size() && slopeInf[j].getSize() == slopeInf[k].getSize(); k++) {
-                    if (isRectangle(slopeZero[i], slopeInf[k])) {
-                        isFind2 = true;
-                        break;
-                    }
-                }
-
-                if (isFind1 && isFind2) {
-                    result2 = max(result2, findArea(slopeZero[i], slopeInf[j]));
-                }
-            }
-        }
-    }
-
-    cout << max(result1, result2);
+    cout << result;
     return 0;
 }
