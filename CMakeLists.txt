@@ -3,4 +3,4 @@ project(Baekjoon)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Baekjoon "diamond/D5 15896 &+ +&.cpp")
+add_executable(Baekjoon "diamond/D5 15896 UCPC2018J.cpp")
