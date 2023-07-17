@@ -8,6 +8,6 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-
+    return 0;
 }
 */
